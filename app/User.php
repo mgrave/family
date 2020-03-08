@@ -5,10 +5,13 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Airlock\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
+
+    public $table = "user";
 
     /**
      * The attributes that are mass assignable.
@@ -36,4 +39,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Devuelve los movimientos de tesoreria
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function treasuries()
+    {
+        return $this->hasMany(Treasury::class, 'treasury_id');
+    }
+
+    /**
+     * Devuelve los socions de negocios que creo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function businessPartners()
+    {
+        return $this->hasMany(BusinessPartner::class, 'business_partner_id');
+    }
+
 }

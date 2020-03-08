@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:airlock')->prefix('admin')->group(function () {
+
+    Route::get('/user', 'UserController@profile');
+
+    Route::prefix('bank')->group(function () {
+        Route::get('services', 'BankController@services')->name('path_bank_service');
+        Route::post('store', 'BankController@store')->name('path_bank_store');
+        Route::put('update', 'BankController@update')->name('path_bank_update');
+        Route::delete('delete', 'BankController@delete')->name('path_bank_delete');
+    });
+
 });
+
+Route::post('login', 'LoginController@access');
