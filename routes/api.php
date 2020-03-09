@@ -33,6 +33,13 @@ Route::middleware('auth:airlock')->group(function () {
         Route::delete('{id}/delete', 'BusinessPartnerController@delete')->name('path_business_partner_delete');
     });
 
+    Route::prefix('treasury')->group(function () {
+        Route::get('search', 'TreasuryController@search')->name('path_treasury_list');
+        Route::post('store', 'TreasuryController@store')->name('path_treasury_store');
+        Route::put('{id}/update', 'TreasuryController@update')->name('path_treasury_update');
+        Route::delete('{id}/delete', 'TreasuryController@delete')->name('path_treasury_delete');
+    });
+
 });
 
 Route::post('login', 'LoginController@access');

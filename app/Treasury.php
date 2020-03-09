@@ -33,7 +33,7 @@ class Treasury extends Model
      */
     public function businessPartner()
     {
-        return $this->belongsTo(BusinessPartner::class, 'business_partner');
+        return $this->belongsTo(BusinessPartner::class, 'business_partner_id');
     }
 
     /**
