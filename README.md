@@ -1,3 +1,15 @@
+## Docker
+docker-compose up --build -d
+
+docker-compose ps
+docker-compose exec app bash
+php artisan migrate --seed
+exit
+
+docker-compose logs app
+docker-compose logs web
+
+
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 <p align="center">

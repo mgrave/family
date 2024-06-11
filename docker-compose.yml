@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: family_app
+    container_name: family_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      -  /var/www/vendor
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+    tty: true
+    networks:
+      - family_network
+
+  web:
+    image: nginx:alpine
+    container_name: family_web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+    tty: true
+    depends_on:
+      - app
+    networks:
+      - family_network
+
+  db:
+    image: mysql:5.7
+    container_name: family_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    tty: true
+    networks:
+      - family_network
+    ports:
+      - "3306:3306"
+
+networks:
+  family_network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
