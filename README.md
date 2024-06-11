@@ -1,11 +1,11 @@
 ## Docker
 docker-compose up --build -d
-
-docker-compose ps
 docker-compose exec app bash
 php artisan migrate --seed
+
 exit
 
+docker-compose ps
 docker-compose logs app
 docker-compose logs web
 
