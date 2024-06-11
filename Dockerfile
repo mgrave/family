@@ -30,20 +30,20 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
-# Copy custom entrypoint script
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
 # Set working directory
 WORKDIR /var/www
 
 # Copy existing application directory contents
 COPY . /var/www
 
-# Copy composer files
-#COPY composer.json /var/www/
+# Copy custom entrypoint script
 #COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-#RUN chmod -R 775 storage bootstrap/cache
 #RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Copy composer files
+COPY composer.json /var/www/
+
+RUN rm composer.lock
 
 # Run composer install
 RUN composer install --no-interaction --optimize-autoloader
@@ -56,6 +56,7 @@ RUN /bin/bash -c "source /root/.bashrc && nvm install --lts"
 
 # Install npm
 RUN /bin/bash -c "source /root/.bashrc && npm install npm@latest -g"
+
 
 # Change current user to www
 USER www
